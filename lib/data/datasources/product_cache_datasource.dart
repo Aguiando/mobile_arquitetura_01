@@ -1,3 +1,5 @@
+import 'package:product_app/data/models/product_model.dart';
+
 class ProductCacheDatasource {
   List<ProductModel>? _cache;
 

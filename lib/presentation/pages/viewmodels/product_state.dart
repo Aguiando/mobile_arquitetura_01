@@ -1,3 +1,5 @@
+import '../../../domain/entities/product.dart';
+
 class ProductState {
   final bool isLoading;
   final List<Product> products;
