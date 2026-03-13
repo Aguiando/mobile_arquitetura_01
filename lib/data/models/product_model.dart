@@ -3,12 +3,14 @@ class ProductModel {
   final String title;
   final double price;
   final String image;
+  bool favorite = false;
 
   ProductModel({
     required this.id,
     required this.title,
     required this.price,
     required this.image,
+    this.favorite = false,
   
   });
 

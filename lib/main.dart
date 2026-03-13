@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:product_app/data/datasources/product_cache_datasource.dart';
 import 'package:product_app/data/datasources/product_remote_datasource.dart';
@@ -12,7 +13,11 @@ void main() {
   final repository = ProductRepositoryImpl(remote, cache);
   final viewModel = ProductViewModel(repository);
 
-  runApp(MyApp(viewModel: viewModel));
+  runApp(
+    ProviderScope(
+      child: MyApp(viewModel: viewModel),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
