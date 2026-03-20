@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:product_app/presentation/pages/viewmodels/product_state.dart';
-import 'package:product_app/presentation/pages/viewmodels/product_viewmodel.dart';
+import 'package:product_app/presentation/pages/product_detail_page.dart';
+import 'package:product_app/presentation/viewmodels/product_state.dart';
+import 'package:product_app/presentation/viewmodels/product_viewmodel.dart';
 import 'package:product_app/state/riverpod/favorite_riverpod.dart';
 
 class ProductPage extends ConsumerWidget {
@@ -34,6 +35,17 @@ class ProductPage extends ConsumerWidget {
               final isFavorite = favorites.contains(product.id);
 
               return ListTile(
+                    onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductDetailPage(
+                    productName: product.title,
+                    price: product.price,
+                ),
+            ),
+        );
+    },
                 leading: Image.network(
                   product.image,
                   width: 50,
