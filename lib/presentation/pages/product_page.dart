@@ -30,57 +30,66 @@ class ProductPage extends ConsumerWidget {
 
           return ListView.builder(
             itemCount: state.products.length,
-            itemBuilder: (context, index) {
-              final product = state.products[index];
-              final isFavorite = favorites.contains(product.id);
+    itemBuilder: (context, index) {
+      final product = state.products[index];
+      final isFavorite = favorites.contains(product.id);
 
-              return ListTile(
-                    onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ProductDetailPage(
-                    productName: product.title,
-                    price: product.price,
-                ),
-            ),
-        );
-    },
-                leading: Image.network(
-                  product.image,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.contain,
-                  errorBuilder: (_, __, ___) =>
-                      const Icon(Icons.broken_image),
-                ),
-                title: Text(product.title),
-                subtitle: Text(
-                  'R\$ ${product.price.toStringAsFixed(2)}',
-                ),
-                trailing: IconButton(
-                  icon: Icon(
-                    isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorite ? Colors.red : null,
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProductDetailPage(
+                          productName: product.title,
+                          price: product.price,
+                          description: product.description,
+                          image: product.image,
+                      ),
                   ),
-                  tooltip: isFavorite
-                      ? 'Remover dos favoritos'
-                      : 'Adicionar aos favoritos',
-                  onPressed: () {
-                    ref
-                        .read(favoritesProvider.notifier)
-                        .toggle(product.id);
-                  },
-                ),
               );
             },
+            leading: Image.network(
+              product.image,
+              width: 50,
+              height: 50,
+              fit: BoxFit.contain,
+              errorBuilder: (_, __, ___) =>
+                  const Icon(Icons.broken_image),
+            ),
+            title: Text(product.title),
+            subtitle: Text(
+              'R\$ ${product.price.toStringAsFixed(2)}',
+            ),
+            trailing: IconButton(
+              icon: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: isFavorite ? Colors.red : null,
+              ),
+              tooltip: isFavorite
+                  ? 'Remover dos favoritos'
+                  : 'Adicionar aos favoritos',
+              onPressed: () {
+                ref
+                    .read(favoritesProvider.notifier)
+                    .toggle(product.id);
+              },
+            ),
+          ),
+          const Divider(
+            height: 10,
+            thickness: 1,
+            indent: 20,
+            endIndent: 0,
+            color: Color.fromARGB(255, 136, 134, 134),
+          ),
+        ],
+      );
+    },
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: viewModel.loadProducts,
-        tooltip: 'Carregar produtos',
-        child: const Icon(Icons.download),
       ),
     );
   }

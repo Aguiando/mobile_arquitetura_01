@@ -5,11 +5,16 @@ class ProductDetailPage extends StatelessWidget {
 
   final String productName;
   final double price;
+  final String description;
+  final String image;
 
   const ProductDetailPage({
     super.key,
     required this.productName,
     required this.price,
+    required this.description,
+    required this.image,
+
   });
 
   @override
@@ -22,6 +27,12 @@ class ProductDetailPage extends StatelessWidget {
         children: [
           Text(productName),
           Text("R\$ ${price}"),
+          Text(description),
+          Expanded(
+            child: Image(image: NetworkImage(image),
+            fit: BoxFit.cover,
+            ),
+          ),
         ],
       ),
     );

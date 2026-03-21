@@ -22,6 +22,7 @@ class ProductRepositoryImpl implements ProductRepository{
         .map((m) => Product(
           id: m.id.toString(),//toString() para manter a consistência com o id vindo do remote
           title: m.title,
+          description: m.description,
           price: m.price,
           image: m.image,
        ))
@@ -33,6 +34,7 @@ class ProductRepositoryImpl implements ProductRepository{
       .map((m) => Product(
         id: m.id.toString(), //toString() para manter a consistência com o id vindo do remote
         title: m.title,
+        description: m.description,
         price: m.price,
         image: m.image,
       ))
