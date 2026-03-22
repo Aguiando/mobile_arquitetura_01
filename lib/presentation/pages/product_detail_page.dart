@@ -25,13 +25,23 @@ class ProductDetailPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Text(productName),
-          Text("R\$ ${price}"),
-          Text(description),
+          Text(productName, style: TextStyle(fontWeight: FontWeight.bold)),
+          SizedBox(height: 8),
           Expanded(
             child: Image(image: NetworkImage(image),
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
             ),
+          ),
+          SizedBox(height: 8),
+          Text("R\$ ${price}", style: TextStyle(color: Colors.green)),
+          SizedBox(height: 8),   
+          Text(description),
+          SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("Voltar"),
           ),
         ],
       ),
