@@ -25,6 +25,9 @@ class ProductRepositoryImpl implements ProductRepository{
           description: m.description,
           price: m.price,
           image: m.image,
+          category: m.category,
+          //rating: m.rating,
+
        ))
        .toList();
   } catch (e) {
@@ -37,6 +40,8 @@ class ProductRepositoryImpl implements ProductRepository{
         description: m.description,
         price: m.price,
         image: m.image,
+        category: m.category,
+        //rating: m.rating,
       ))
       .toList();
     }

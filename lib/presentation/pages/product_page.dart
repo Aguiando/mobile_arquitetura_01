@@ -46,6 +46,7 @@ class ProductPage extends ConsumerWidget {
                           productName: product.title,
                           price: product.price,
                           description: product.description,
+                          category: product.category,
                           image: product.image,
                       ),
                   ),

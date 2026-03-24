@@ -3,6 +3,8 @@ class Product {
   final String title;
   final String description;
   final double price;
+  final String category;
+  //final String rating;
   final String image;
 
   const Product({
@@ -10,6 +12,8 @@ class Product {
     required this.title,
     required this.description,
     required this.price,
+    required this.category,
+    //required this.rating,
     required this.image,
   });
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -7,6 +8,7 @@ class ProductDetailPage extends StatelessWidget {
   final double price;
   final String description;
   final String image;
+  final String category;
 
   const ProductDetailPage({
     super.key,
@@ -14,6 +16,7 @@ class ProductDetailPage extends StatelessWidget {
     required this.price,
     required this.description,
     required this.image,
+    required this.category,
 
   });
 
@@ -26,6 +29,7 @@ class ProductDetailPage extends StatelessWidget {
       body: Column(
         children: [
           Text(productName, style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(category),
           SizedBox(height: 8),
           Expanded(
             child: Image(image: NetworkImage(image),
