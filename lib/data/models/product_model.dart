@@ -5,7 +5,8 @@ class ProductModel {
   final double price;
   final String image;
   final String category;
-  //final String rating;
+  final double rate;
+  final int ratingCount;
   bool favorite = false;
 
   ProductModel({
@@ -15,7 +16,8 @@ class ProductModel {
     required this.price,
     required this.image,
     required this.category,
-    //required this.rating,
+    required this.rate,
+    required this.ratingCount,
     this.favorite = false,
   
   });
@@ -27,7 +29,8 @@ class ProductModel {
       description: json["description"],
       price: json["price"].toDouble(),
       category: json["category"],
-      //rating: json["rating"],
+      rate: json["rating"]["rate"].toDouble(),
+      ratingCount: json["rating"]["count"],
       image: json["image"],
     );
   }

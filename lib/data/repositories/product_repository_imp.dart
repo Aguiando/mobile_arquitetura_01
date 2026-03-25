@@ -26,7 +26,8 @@ class ProductRepositoryImpl implements ProductRepository{
           price: m.price,
           image: m.image,
           category: m.category,
-          //rating: m.rating,
+          rate: m.rate,
+          ratingCount: m.rate.toInt(),
 
        ))
        .toList();
@@ -41,7 +42,8 @@ class ProductRepositoryImpl implements ProductRepository{
         price: m.price,
         image: m.image,
         category: m.category,
-        //rating: m.rating,
+        rate: m.rate,
+        ratingCount: m.rate.toInt(),
       ))
       .toList();
     }

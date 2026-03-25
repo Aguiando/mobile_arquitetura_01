@@ -4,7 +4,8 @@ class Product {
   final String description;
   final double price;
   final String category;
-  //final String rating;
+  final double rate;
+  final int ratingCount;
   final String image;
 
   const Product({
@@ -13,7 +14,8 @@ class Product {
     required this.description,
     required this.price,
     required this.category,
-    //required this.rating,
+    required this.rate,
+    required this.ratingCount,
     required this.image,
   });
 }

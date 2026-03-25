@@ -48,6 +48,8 @@ class ProductPage extends ConsumerWidget {
                           description: product.description,
                           category: product.category,
                           image: product.image,
+                          rate: product.rate,
+                          ratingCount: product.ratingCount,
                       ),
                   ),
               );

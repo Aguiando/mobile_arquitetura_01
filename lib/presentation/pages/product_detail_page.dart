@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -9,6 +8,8 @@ class ProductDetailPage extends StatelessWidget {
   final String description;
   final String image;
   final String category;
+  final double rate;
+  final int ratingCount;
 
   const ProductDetailPage({
     super.key,
@@ -17,6 +18,8 @@ class ProductDetailPage extends StatelessWidget {
     required this.description,
     required this.image,
     required this.category,
+    required this.rate,
+    required this.ratingCount,
 
   });
 
@@ -24,12 +27,14 @@ class ProductDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Detalhes"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        )
       ),
       body: Column(
         children: [
-          Text(productName, style: TextStyle(fontWeight: FontWeight.bold)),
-          Text(category),
+          Text(productName, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,)),
           SizedBox(height: 8),
           Expanded(
             child: Image(image: NetworkImage(image),
@@ -37,16 +42,37 @@ class ProductDetailPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8),
-          Text("R\$ ${price}", style: TextStyle(color: Colors.green)),
+          Text("R\$ ${price}", 
+            style: TextStyle(
+              fontSize: 16, fontWeight: FontWeight.bold,
+                color: Colors.green)
+              ),
+          Row(children: [
+            Icon(Icons.star, color: Colors.amber, size: 20),
+            SizedBox(width: 4),
+            Text(rate.toStringAsFixed(1),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
+            ),
+            SizedBox(width: 8),
+          Text(
+            '($ratingCount ratings)',
+            style: TextStyle(fontSize: 14, color:Colors.grey),
+          ),
+        ],
+      ),
           SizedBox(height: 8),   
           Text(description),
+          SizedBox(height: 8),
+          Row(children:[Text("Category:${category}")
+          ]
+        ),
           SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text("Voltar"),
-          ),
+          //ElevatedButton(
+            //onPressed: () {
+              //Navigator.pop(context);
+            //},
+            //child: Text("Voltar"),
+          //),
         ],
       ),
     );
