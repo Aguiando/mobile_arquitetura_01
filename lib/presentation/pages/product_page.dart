@@ -94,6 +94,26 @@ class ProductPage extends ConsumerWidget {
           );
         },
       ),
+            floatingActionButton: const FloatingHomeButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+}
+class FloatingHomeButton extends StatelessWidget {
+  const FloatingHomeButton({super.key});
+
+@override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/home',
+          (HomePage) => false,
+        );
+      },
+      child: const Icon(Icons.home),
+      tooltip: 'Ir para Home',
     );
   }
 }

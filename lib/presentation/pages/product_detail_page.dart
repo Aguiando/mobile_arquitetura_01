@@ -44,7 +44,7 @@ class ProductDetailPage extends StatelessWidget {
           SizedBox(height: 8),
           Text("R\$ ${price}", 
             style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold,
+              fontSize: 22, fontWeight: FontWeight.bold,
                 color: Colors.green)
               ),
           Row(children: [
@@ -67,14 +67,29 @@ class ProductDetailPage extends StatelessWidget {
           ]
         ),
           SizedBox(height: 16),
-          //ElevatedButton(
-            //onPressed: () {
-              //Navigator.pop(context);
-            //},
-            //child: Text("Voltar"),
-          //),
         ],
       ),
+      floatingActionButton: const FloatingHomeButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+}
+
+class FloatingHomeButton extends StatelessWidget {
+  const FloatingHomeButton({super.key});
+
+@override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/home',
+          (HomePage) => false,
+        );
+      },
+      child: const Icon(Icons.home),
+      tooltip: 'Ir para Home',
     );
   }
 }
