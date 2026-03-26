@@ -20,7 +20,7 @@ class ProductRepositoryImpl implements ProductRepository{
 
       return models
         .map((m) => Product(
-          id: m.id.toString(),//toString() para manter a consistência com o id vindo do remote
+          id: m.id.toString(),
           title: m.title,
           description: m.description,
           price: m.price,
@@ -36,7 +36,7 @@ class ProductRepositoryImpl implements ProductRepository{
     if (cached != null) {
       return cached
       .map((m) => Product(
-        id: m.id.toString(), //toString() para manter a consistência com o id vindo do remote
+        id: m.id.toString(), 
         title: m.title,
         description: m.description,
         price: m.price,

@@ -14,7 +14,12 @@ class ProductPage extends ConsumerWidget {
     final favorites = ref.watch(favoritesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Produtos')),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: ValueListenableBuilder<ProductState>(
         valueListenable: viewModel.state,
         builder: (context, state, _) {
