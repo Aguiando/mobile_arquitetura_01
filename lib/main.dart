@@ -1,63 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
-import 'package:product_app/data/datasources/product_cache_datasource.dart';
-import 'package:product_app/data/datasources/product_remote_datasource.dart';
-import 'package:product_app/data/repositories/product_repository_imp.dart';
-import 'package:product_app/presentation/pages/home_page.dart';
-import 'package:product_app/presentation/pages/product_detail_page.dart';
-import 'package:product_app/presentation/pages/product_page.dart';
-import 'package:product_app/presentation/viewmodels/product_viewmodel.dart';
+import 'presentation/screens/login_page.dart';
+import 'presentation/screens/home_screen.dart';
+import 'presentation/screens/product_list_screen.dart';
 
 void main() {
-  final cache = ProductCacheDatasource();
-  final remote = ProductRemoteDatasource(http.Client());
-  final repository = ProductRepositoryImpl(remote, cache);
-  final viewModel = ProductViewModel(repository);
-
   runApp(
-    ProviderScope(
-      child: MyApp(viewModel: viewModel),
+    const ProviderScope(
+      child: ProductApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  final ProductViewModel viewModel;
-
-  const MyApp({super.key, required this.viewModel});
+class ProductApp extends StatelessWidget {
+  const ProductApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Product App',
+      title: 'Projeto Produtos com Autenticação',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorSchemeSeed: Colors.blue,
         useMaterial3: true,
       ),
-      initialRoute: '/home',
+      initialRoute: '/login',
       routes: {
-        '/home': (context) => HomePage(viewModel: viewModel),
-        '/products': (context) => ProductPage(viewModel: viewModel),
-      },
-      onGenerateRoute: (settings) {
-        if (settings.name == '/product-detail') {
-          final args = settings.arguments as Map<String, dynamic>;
-          return MaterialPageRoute(
-            builder: (context) {
-              return ProductDetailPage(
-                productName: args['productName'],
-                price: args['price'],
-                description: args['description'],
-                image: args['image'],
-                category: args['category'],
-                rate: args['rate'],
-                ratingCount: args['ratingCount'],
-              );
-            },
-          );
-        }
-        return null;
+        '/login': (_) => const LoginPage(),
+        '/home': (_) => const HomeScreen(),
+        '/products': (_) => const ProductListScreen(),
       },
     );
   }
