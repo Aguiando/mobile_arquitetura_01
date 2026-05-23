@@ -5,9 +5,7 @@ import '../../services/providers.dart';
 import '../widgets/labeled_field.dart';
 
 class ProductFormScreen extends ConsumerStatefulWidget {
-  /// If [product] is provided the form is in edit mode; otherwise create mode.
   final Product? product;
-
   const ProductFormScreen({super.key, this.product});
 
   @override
@@ -16,7 +14,6 @@ class ProductFormScreen extends ConsumerStatefulWidget {
 
 class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
   final _formKey = GlobalKey<FormState>();
-
   late final TextEditingController _title;
   late final TextEditingController _description;
   late final TextEditingController _price;
@@ -52,7 +49,6 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
 
     try {
       final notifier = ref.read(productsProvider.notifier);
-
       if (_isEditing) {
         final updated = widget.product!.copyWith(
           title: _title.text.trim(),
@@ -61,9 +57,8 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
           thumbnail: _image.text.trim(),
           category: _category.text.trim(),
         );
-        await notifier.update((products) => products
-            .map((p) => p.id == updated.id ? updated : p)
-            .toList());
+        await notifier.update((products) =>
+            products.map((p) => p.id == updated.id ? updated : p).toList());
       } else {
         final newProduct = Product(
           title: _title.text.trim(),
@@ -79,8 +74,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-                _isEditing ? 'Produto atualizado!' : 'Produto criado!'),
+            content: Text(_isEditing ? 'Produto atualizado!' : 'Produto criado!'),
             backgroundColor: Colors.green,
           ),
         );
@@ -129,7 +123,8 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                 label: 'Preço (R\$) *',
                 controller: _price,
                 hint: '0.00',
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 validator: (v) {
                   if (v == null || v.trim().isEmpty) return 'Campo obrigatório';
                   if (double.tryParse(v.trim()) == null) return 'Valor inválido';
@@ -157,10 +152,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                           height: 20,
                           width: 20,
                           child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
+                              strokeWidth: 2, color: Colors.white))
                       : Text(_isEditing ? 'Salvar alterações' : 'Cadastrar'),
                 ),
               ),

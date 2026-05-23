@@ -1,76 +1,64 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/product.dart';
-import '../services/product_service.dart';
-
-// ── Service ──────────────────────────────────────────────────────────────────
-
-final productServiceProvider = Provider<ProductService>((_) => ProductService());
-
-// ── Products (AsyncNotifier) ──────────────────────────────────────────────────
-
-class ProductsNotifier extends AsyncNotifier<List<Product>> {
-  @override
-  Future<List<Product>> build() async {
-    return ref.read(productServiceProvider).fetchProducts();
-  }
-
-  Future<void> reload() async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(
-      () => ref.read(productServiceProvider).fetchProducts(),
-    );
-  }
-
-  Future<void> add(Product product) async {
-    final service = ref.read(productServiceProvider);
-    final created = await service.addProduct(product);
-    state = AsyncData([...state.value ?? [], created]);
-  }
-
-  Future<void> updateProduct(Product product) async {
-    final service = ref.read(productServiceProvider);
-    final updated = await service.updateProduct(product);
-    state = AsyncData(
-      state.value!.map((p) => p.id == updated.id ? updated : p).toList(),
-    );
-  }
-
-  Future<void> delete(int id) async {
-    await ref.read(productServiceProvider).deleteProduct(id);
-    state = AsyncData(state.value!.where((p) => p.id != id).toList());
-  }
-
-  void toggleFavorite(int id) {
-    state = AsyncData(
-      state.value!.map((p) {
-        return p.id == id ? p.copyWith(favorite: !p.favorite) : p;
-      }).toList(),
-    );
-  }
-}
-
-final productsProvider =
-    AsyncNotifierProvider<ProductsNotifier, List<Product>>(
-  ProductsNotifier.new,
-);
-
-// ── Favorites ─────────────────────────────────────────────────────────────────
-
+import '../session/session_controller.dart';
+import 'product_service.dart';
+ 
+// ── Favorites ────────────────────────────────────────────────────────────────
+ 
 class FavoritesNotifier extends StateNotifier<Set<String>> {
   FavoritesNotifier() : super({});
-
-  void toggle(String productId) {
-    if (state.contains(productId)) {
-      state = {...state}..remove(productId);
-    } else {
-      state = {...state, productId};
-    }
+ 
+  void toggle(String id) {
+    state = state.contains(id) ? (state..remove(id)) : {...state, id};
   }
-
-  bool isFavorite(String productId) => state.contains(productId);
 }
-
+ 
 final favoritesProvider =
     StateNotifierProvider<FavoritesNotifier, Set<String>>(
   (_) => FavoritesNotifier(),
 );
+ 
+// ── Products ──────────────────────────────────────────────────────────────────
+ 
+class ProductsNotifier extends StateNotifier<AsyncValue<List<Product>>> {
+  final ProductService _service;
+  final String? _token;
+ 
+  ProductsNotifier(this._service, this._token) : super(const AsyncLoading()) {
+    _load();
+  }
+ 
+  Future<void> _load() async {
+    state = const AsyncLoading();
+    try {
+      final products = await _service.fetchProducts(token: _token);
+      state = AsyncData(products);
+    } catch (e, st) {
+      state = AsyncError(e, st);
+    }
+  }
+ 
+  Future<void> reload() => _load();
+ 
+  Future<void> add(Product product) async {
+    final created = await _service.addProduct(product, token: _token);
+    state.whenData((list) => state = AsyncData([...list, created]));
+  }
+ 
+  Future<void> update(List<Product> Function(List<Product>) updater) async {
+    state.whenData((list) => state = AsyncData(updater(list)));
+  }
+ 
+  Future<void> delete(int id) async {
+    await _service.deleteProduct(id, token: _token);
+    state.whenData(
+      (list) => state = AsyncData(list.where((p) => p.id != id).toList()),
+    );
+  }
+}
+ 
+final productsProvider =
+    StateNotifierProvider<ProductsNotifier, AsyncValue<List<Product>>>((ref) {
+  final token = SessionController.instance.token;
+  return ProductsNotifier(ProductService(), token);
+});

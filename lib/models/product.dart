@@ -1,71 +1,79 @@
 class Product {
-  final int id;
+  final int? id;
   final String title;
   final String description;
-  final String category;
   final double price;
   final double rating;
-  final int stock;
   final String thumbnail;
-  bool favorite;
-
-  Product({
-    required this.id,
+  final String category;
+  final List<String> images;
+  final int? stock;
+  final String? brand;
+ 
+  const Product({
+    this.id,
     required this.title,
     required this.description,
-    required this.category,
     required this.price,
     required this.rating,
-    required this.stock,
     required this.thumbnail,
-    this.favorite = false,
+    required this.category,
+    this.images = const [],
+    this.stock,
+    this.brand,
   });
-
+ 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      category: json['category'],
-      price: (json['price'] as num).toDouble(),
-      rating: (json['rating'] as num).toDouble(),
-      stock: json['stock'],
-      thumbnail: json['thumbnail'],
+      id: json['id'] as int?,
+      title: json['title'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
+      rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
+      thumbnail: json['thumbnail'] as String? ?? '',
+      category: json['category'] as String? ?? '',
+      images: (json['images'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      stock: json['stock'] as int?,
+      brand: json['brand'] as String?,
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'title': title,
-      'price': price,
-      'description': description,
-      'category': category,
-      'stock': stock,
-      'thumbnail': thumbnail,
-    };
-  }
-
+ 
+  Map<String, dynamic> toJson() => {
+        if (id != null) 'id': id,
+        'title': title,
+        'description': description,
+        'price': price,
+        'rating': rating,
+        'thumbnail': thumbnail,
+        'category': category,
+        'images': images,
+        if (stock != null) 'stock': stock,
+        if (brand != null) 'brand': brand,
+      };
+ 
   Product copyWith({
     int? id,
     String? title,
     String? description,
-    String? category,
     double? price,
     double? rating,
-    int? stock,
     String? thumbnail,
-    bool? favorite,
+    String? category,
+    List<String>? images,
+    int? stock,
+    String? brand,
   }) {
     return Product(
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
-      category: category ?? this.category,
       price: price ?? this.price,
       rating: rating ?? this.rating,
-      stock: stock ?? this.stock,
       thumbnail: thumbnail ?? this.thumbnail,
-      favorite: favorite ?? this.favorite,
+      category: category ?? this.category,
+      images: images ?? this.images,
+      stock: stock ?? this.stock,
+      brand: brand ?? this.brand,
     );
   }
 }
